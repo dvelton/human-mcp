@@ -1,49 +1,28 @@
 # human-mcp
 
-A person-centric MCP server. Your context, your rules.
+A person-centric MCP server.
 
 ---
 
 ## This is a thought experiment
 
-This project explores what it would look like if your personal context for AI tools lived on a server *you* control — portable across LLM clients, scoped by permission tiers, and fully auditable.
+This project explores what it would look like if your personal context for AI tools lived on a server you control, portable across LLM clients, scoped by permission tiers, and fully auditable.
 
-Everything here uses synthetic data. "John Doe" is a fictional persona at a fictional company. The reference code demonstrates what the architecture would look like, not something you should run with real data.
+Everything here uses synthetic data. The reference code demonstrates what the architecture could look like, not something you should run with real data.
 
-**[View the interactive demo →](https://dvelton.github.io/human-mcp/)**
+**[Interactive demo](https://dvelton.github.io/human-mcp/)**
 
 ---
 
-## Risks and limitations
+## Limitations
 
-Read this section before doing anything else.
-
-**This is a concept demonstration only. It is not designed, tested, or intended for use with real personal data.** The code exists to illustrate an architecture and provoke discussion about person-centric AI context. If someone were to build this for real, the following risks would need to be addressed:
-
-**Data leaves your machine.** When an MCP client connects to this server and queries your data, that data is sent to whichever LLM the client is using. If that's a cloud-hosted model (Claude, ChatGPT, Copilot, Gemini), your personal context now lives on that provider's infrastructure — in their inference pipeline, their logs, and potentially their debug systems. The MCP server controls what leaves your machine, but once it leaves, your control ends.
-
-**Prompt injection is an unsolved problem.** If your persona data includes content from external sources (emails others sent you, issue comments, web pages), an attacker could embed instructions in that content. The LLM would process those instructions alongside your personal context, potentially causing it to exfiltrate data from other modules. This is not a theoretical risk — it's a well-documented attack vector across the MCP ecosystem.
-
-**Data synthesis amplifies exposure.** Individual data points can be innocuous on their own. But giving an LLM simultaneous access to your calendar, projects, contacts, and communication patterns lets it infer things no single source reveals — strategic priorities, relationship dynamics, upcoming organizational changes. The combination is more sensitive than the parts. Permission scoping per-module does not fully address this.
-
-**MCP client authentication is immature.** Most local MCP setups (including stdio transport) have no authentication. Any process that can talk to the server can call its tools. The MCP spec supports OAuth 2.1, but few local implementations use it. This server does not implement authentication.
-
-**Conversation persistence re-exposes your data.** LLM conversation histories often include tool call results. Your "ephemeral" MCP context can end up as a permanent record in a cloud-hosted chat log you don't fully control.
-
-**Scope creep is a real risk.** The initial setup might be carefully scoped. Over time, users tend to add more data sources without revisiting what's already exposed. This project includes an audit log to help with visibility, but it requires you to actually review it.
+**This is a concept project only. It is not designed, tested, or intended for use with real personal data.** The code exists to illustrate an architecture and can be useful for discussion about person-centric AI context. 
 
 ---
 
 ## What problem does this address
 
-Today, personal context for LLMs is:
-
-- **Vendor-locked.** Your Claude custom instructions are useless in ChatGPT. Your ChatGPT memory doesn't follow you to Copilot. Switch tools, lose context.
-- **Static.** Custom instructions are text you write once and occasionally update. They don't reflect what you're actually working on right now.
-- **All-or-nothing.** The model sees everything in your custom instructions, or nothing. No per-module scoping, no permission tiers.
-- **Unauditable.** No vendor tells you how your context was used, what was accessed, or when.
-
-A person-centric MCP server addresses these gaps by making personal context portable, queryable, permission-scoped, and observable.
+A person-centric MCP server addresses can make personal context portable, queryable, permission-scoped, and observable.
 
 ---
 
