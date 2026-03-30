@@ -1,0 +1,123 @@
+# Calendar for the week of March 30 - April 3, 2026 (synthetic data)
+week_of: "2026-03-30"
+
+events:
+  - id: cal-001
+    date: "2026-03-30"
+    start: "09:00"
+    end: "09:30"
+    title: "Weekly team standup"
+    type: recurring
+    attendees:
+      - Sarah Kim
+      - Marcus Webb
+      - Jordan Liu
+    location: Zoom
+    notes: "Review sprint progress, surface blockers"
+
+  - id: cal-002
+    date: "2026-03-30"
+    start: "10:00"
+    end: "11:00"
+    title: "Atlas API design review"
+    type: one-time
+    attendees:
+      - Sarah Kim
+      - Marcus Webb
+      - Amara Okafor
+    location: Conference Room B
+    notes: "Walk through proposed auth model. Bring competitor analysis."
+
+  - id: cal-003
+    date: "2026-03-30"
+    start: "14:00"
+    end: "14:30"
+    title: "1:1 with manager (Lisa Chen)"
+    type: recurring
+    attendees:
+      - Lisa Chen
+    location: Zoom
+    notes: "Discuss Q3 roadmap priorities and headcount request"
+
+  - id: cal-004
+    date: "2026-03-31"
+    start: "09:00"
+    end: "09:30"
+    title: "Beacon beta feedback sync"
+    type: one-time
+    attendees:
+      - Priya Patel
+      - Jordan Liu
+    location: Zoom
+    notes: "Review latest beta feedback. Discuss search performance issues."
+
+  - id: cal-005
+    date: "2026-03-31"
+    start: "11:00"
+    end: "12:00"
+    title: "Cross-functional planning: Q3"
+    type: one-time
+    attendees:
+      - Lisa Chen
+      - Sarah Kim
+      - Priya Patel
+      - David Romero
+    location: Main Conference Room
+    notes: "Quarterly planning session. Bring prioritized feature list."
+
+  - id: cal-006
+    date: "2026-04-01"
+    start: "10:00"
+    end: "10:30"
+    title: "Cipher feasibility check-in"
+    type: one-time
+    attendees:
+      - Amara Okafor
+    location: Zoom
+    notes: "Review initial research findings. Decide on next steps."
+
+  - id: cal-007
+    date: "2026-04-01"
+    start: "15:00"
+    end: "16:00"
+    title: "All-hands: CEO update"
+    type: recurring
+    attendees: []
+    location: Auditorium / Livestream
+    notes: "Company-wide update. Q1 results and strategic direction."
+
+  - id: cal-008
+    date: "2026-04-02"
+    start: "09:00"
+    end: "09:30"
+    title: "Weekly team standup"
+    type: recurring
+    attendees:
+      - Sarah Kim
+      - Marcus Webb
+      - Jordan Liu
+    location: Zoom
+    notes: "Mid-week check-in"
+
+  - id: cal-009
+    date: "2026-04-02"
+    start: "13:00"
+    end: "14:00"
+    title: "Atlas security review prep"
+    type: one-time
+    attendees:
+      - Marcus Webb
+      - Amara Okafor
+    location: Conference Room A
+    notes: "Prepare materials for platform team security review next week"
+
+  - id: cal-010
+    date: "2026-04-03"
+    start: "11:00"
+    end: "11:30"
+    title: "1:1 with Sarah Kim"
+    type: recurring
+    attendees:
+      - Sarah Kim
+    location: Zoom
+    notes: "Discuss Atlas timeline and Marcus's bandwidth concerns"

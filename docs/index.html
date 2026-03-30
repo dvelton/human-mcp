@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>human-mcp</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface-2: #1c2128;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --yellow: #d29922;
+            --red: #f85149;
+            --orange: #db6d28;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 span { color: var(--text-muted); font-weight: 400; }
+
+        .tagline {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .warning-banner {
+            background: rgba(248, 81, 73, 0.1);
+            border: 1px solid var(--red);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .warning-banner strong { color: var(--red); }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        p { margin-bottom: 1rem; color: var(--text-muted); }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .concept-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.25rem;
+        }
+
+        .concept-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .concept-card p {
+            font-size: 0.85rem;
+            margin-bottom: 0;
+        }
+
+        /* Tier selector */
+        .tier-selector {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .tier-btn {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+            border-right: 1px solid var(--border);
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .tier-btn:last-child { border-right: none; }
+        .tier-btn:hover { background: var(--surface-2); color: var(--text); }
+        .tier-btn.active { background: var(--accent); color: #fff; }
+
+        .tier-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            margin-bottom: 0.75rem;
+        }
+
+        .tier-label.full { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+        .tier-label.standard { background: rgba(210, 153, 34, 0.15); color: var(--yellow); }
+        .tier-label.minimal { background: rgba(248, 81, 73, 0.15); color: var(--red); }
+
+        /* Module tabs */
+        .module-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .module-tab {
+            padding: 0.6rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .module-tab:hover { color: var(--text); }
+        .module-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* Data display */
+        .data-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface-2);
+        }
+
+        .data-header span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .data-body {
+            padding: 1rem;
+            font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .field-exposed { color: var(--green); }
+        .field-redacted { color: var(--red); text-decoration: line-through; opacity: 0.5; }
+        .field-key { color: var(--accent); }
+        .field-string { color: #a5d6ff; }
+        .field-note { color: var(--yellow); font-style: italic; }
+
+        /* Audit log */
+        .audit-entry {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .audit-timestamp { color: var(--text-muted); }
+        .audit-tool { color: var(--accent); }
+        .audit-tier { font-weight: 600; }
+        .audit-tier.full { color: var(--green); }
+        .audit-tier.standard { color: var(--yellow); }
+        .audit-tier.minimal { color: var(--red); }
+        .audit-exposed { color: var(--green); }
+        .audit-redacted { color: var(--red); }
+
+        .section { margin-bottom: 3rem; }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>human-mcp</h1>
+            <p class="tagline">A person-centric MCP server. Your context, your rules.</p>
+        </header>
+
+        <div class="warning-banner">
+            <strong>This is a thought experiment, not production software.</strong>
+            All data shown here is synthetic. "John Doe" is a fictional persona. This project
+            exists to explore what person-centric context serving could look like — the privacy
+            model, the permission tiers, the audit trail. Do not use this with real personal data.
+            See the <a href="https://github.com/dvelton/human-mcp#risks-and-limitations" style="color: var(--red);">README</a>
+            for a full discussion of risks.
+        </div>
+
+        <div class="section">
+            <h2>The idea</h2>
+            <p>
+                Every LLM conversation starts from zero. Your personal context — who you are,
+                what you're working on, how you communicate — is either absent or locked into a
+                single vendor's custom instructions. A person-centric MCP server puts that context
+                under your control: portable across tools, scoped by permission tiers, and fully auditable.
+            </p>
+
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h3>Person-centric, not tool-centric</h3>
+                    <p>Existing MCP servers wrap individual services (one for Gmail, one for Calendar). This wraps a person — one server, all your context.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Permission tiers</h3>
+                    <p>Same data, different exposure levels. Full access for trusted tools. Minimal for everything else. You decide.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Audit everything</h3>
+                    <p>Every piece of data that leaves the server is logged. You can always answer: "What has any AI learned about me?"</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Interactive demo: permission tiers</h2>
+            <p>Select a module and toggle between permission tiers to see how the same underlying data gets filtered.</p>
+
+            <div class="module-tabs" id="moduleTabs"></div>
+
+            <div class="tier-selector" id="tierSelector">
+                <button class="tier-btn active" data-tier="full">Full</button>
+                <button class="tier-btn" data-tier="standard">Standard</button>
+                <button class="tier-btn" data-tier="minimal">Minimal</button>
+            </div>
+
+            <div class="data-panel">
+                <div class="data-header">
+                    <span id="dataModuleLabel">Module: identity</span>
+                    <span class="tier-label full" id="dataTierLabel">FULL</span>
+                </div>
+                <div class="data-body" id="dataBody"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Simulated audit log</h2>
+            <p>As you browse modules above, each access is logged here — just like the real MCP server would record it.</p>
+            <div id="auditLog"></div>
+        </div>
+
+        <footer>
+            <p>
+                human-mcp is an open-source thought experiment.
+                <a href="https://github.com/dvelton/human-mcp">View the repo</a> for the
+                working MCP server code, setup instructions, and a full discussion of privacy risks.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+    // ── Synthetic persona data (mirrors the YAML files in the repo) ──
+
+    const personaData = {
+        identity: {
+            name: "John Doe",
+            title: "Senior Product Manager",
+            company: "Acme Technologies (fictional)",
+            location: "San Francisco, CA",
+            timezone: "America/Los_Angeles",
+            working_hours: { start: "09:00", end: "18:00", days: ["Mon","Tue","Wed","Thu","Fri"] },
+            expertise: [
+                "Product strategy and roadmap planning",
+                "Developer tools and API design",
+                "Cross-functional team leadership",
+                "Data-informed decision making"
+            ],
+            communication_preferences: {
+                style: "Direct and concise",
+                format: "Bullet points over long paragraphs",
+                response_time: "Same business day for urgent, 48 hours for everything else"
+            },
+            bio: "John is a senior product manager at Acme Technologies, a fictional company that builds developer infrastructure tools. He has 8 years of experience in product management, previously at two mid-stage startups."
+        },
+        projects: [
+            {
+                name: "Project Atlas",
+                status: "active",
+                priority: "high",
+                role: "Lead PM",
+                summary: "Redesigning the core API gateway to support multi-tenant workloads. Currently in technical design phase. Launch target is Q3.",
+                blockers: ["Waiting on security review from the platform team", "Need to finalize rate-limiting strategy"],
+                collaborators: [{name:"Sarah Kim",role:"Engineering Lead"},{name:"Marcus Webb",role:"Staff Engineer"}],
+                recent_activity: "Completed stakeholder interviews last week. Draft PRD circulated for review."
+            },
+            {
+                name: "Project Beacon",
+                status: "active",
+                priority: "medium",
+                role: "Contributing PM",
+                summary: "Internal developer portal for API documentation and testing. In beta with two internal teams.",
+                blockers: [],
+                collaborators: [{name:"Priya Patel",role:"Lead PM"},{name:"Jordan Liu",role:"Frontend Engineer"}],
+                recent_activity: "Beta feedback is mostly positive. Main complaint is search performance."
+            },
+            {
+                name: "Project Cipher",
+                status: "planning",
+                priority: "low",
+                role: "Lead PM",
+                summary: "Exploration of end-to-end encryption for customer data at rest. Very early stage.",
+                blockers: ["Needs executive sponsor", "Legal review not yet started"],
+                collaborators: [{name:"Amara Okafor",role:"Security Architect"}],
+                recent_activity: "Initial research doc shared with CISO. Waiting for feedback."
+            }
+        ],
+        calendar: [
+            { date:"2026-03-30", start:"09:00", end:"09:30", title:"Weekly team standup", type:"recurring", attendees:["Sarah Kim","Marcus Webb","Jordan Liu"], location:"Zoom", notes:"Review sprint progress, surface blockers" },
+            { date:"2026-03-30", start:"10:00", end:"11:00", title:"Atlas API design review", type:"one-time", attendees:["Sarah Kim","Marcus Webb","Amara Okafor"], location:"Conference Room B", notes:"Walk through proposed auth model. Bring competitor analysis." },
+            { date:"2026-03-30", start:"14:00", end:"14:30", title:"1:1 with manager (Lisa Chen)", type:"recurring", attendees:["Lisa Chen"], location:"Zoom", notes:"Discuss Q3 roadmap priorities and headcount request" },
+            { date:"2026-03-31", start:"09:00", end:"09:30", title:"Beacon beta feedback sync", type:"one-time", attendees:["Priya Patel","Jordan Liu"], location:"Zoom", notes:"Review latest beta feedback." },
+            { date:"2026-03-31", start:"11:00", end:"12:00", title:"Cross-functional planning: Q3", type:"one-time", attendees:["Lisa Chen","Sarah Kim","Priya Patel","David Romero"], location:"Main Conference Room", notes:"Quarterly planning session." },
+            { date:"2026-04-01", start:"10:00", end:"10:30", title:"Cipher feasibility check-in", type:"one-time", attendees:["Amara Okafor"], location:"Zoom", notes:"Review initial research findings." },
+            { date:"2026-04-02", start:"09:00", end:"09:30", title:"Weekly team standup", type:"recurring", attendees:["Sarah Kim","Marcus Webb","Jordan Liu"], location:"Zoom", notes:"Mid-week check-in" },
+        ],
+        contacts: [
+            { name:"Sarah Kim", title:"Engineering Lead", relationship:"Direct collaborator on Atlas", interaction_frequency:"Daily", notes:"Very detail-oriented. Prefers written communication over meetings." },
+            { name:"Marcus Webb", title:"Staff Engineer", relationship:"Key technical contributor on Atlas", interaction_frequency:"Several times per week", notes:"Deep expertise in distributed systems. Currently stretched thin." },
+            { name:"Priya Patel", title:"Product Manager", relationship:"Peer PM, lead on Beacon", interaction_frequency:"Weekly", notes:"Good collaborator, tends to over-scope features." },
+            { name:"Amara Okafor", title:"Security Architect", relationship:"Collaborator on Atlas and Cipher", interaction_frequency:"Bi-weekly", notes:"Company's go-to on security architecture. Schedule fills up fast." },
+            { name:"Lisa Chen", title:"VP of Product", relationship:"Direct manager", interaction_frequency:"Weekly 1:1", notes:"Appreciates concise updates with clear asks." }
+        ],
+        writing_style: {
+            tone: "Professional but not formal. Comfortable being direct.",
+            length: "Prefers short, structured communications. Rarely writes more than 300 words in an email.",
+            structure: "Heavy use of bullet points, numbered lists, and headers.",
+            vocabulary: "Plain language. Avoids jargon unless writing for a technical audience.",
+            samples: [
+                { type:"email", context:"Asking engineering lead to review a document", content:"Subject: Atlas PRD — eyes needed by Thursday\n\nSarah,\n\nDraft PRD for the Atlas auth model is ready for review: [link]\n\nSpecifically looking for your take on:\n- Whether the token refresh approach is realistic given our infra\n- The rate-limiting section (page 4)\n- Anything I'm missing on backward compatibility\n\nThursday EOD would be ideal.\n\nThanks,\nJohn" },
+                { type:"slack", context:"Quick status update to manager", content:"Quick Atlas update: PRD is out for review with Sarah and Marcus. Three open questions on auth model — expecting input by Thursday. Security review still blocked on platform team availability." }
+            ]
+        },
+        reading_list: [
+            { title:"API Design Patterns", author:"JJ Geewax", type:"book", status:"reading", notes:"Useful reference for Atlas API design decisions." },
+            { title:"The Pragmatic Engineer Newsletter", author:"Gergely Orosz", type:"newsletter", status:"subscribed", notes:"Good pulse on industry engineering practices." },
+            { title:"Building Multi-Tenant SaaS Architectures", author:"AWS Well-Architected", type:"whitepaper", status:"completed", notes:"Solid on isolation patterns but light on rate-limiting." },
+            { title:"Zero Trust Architecture (NIST SP 800-207)", author:"NIST", type:"whitepaper", status:"queued", notes:"Recommended by Amara for Cipher background." },
+        ]
+    };
+
+    // ── Permission rules (mirrors permissions.yaml) ──
+
+    const permissionRules = {
+        identity: {
+            full:     { expose: ["name","title","company","location","timezone","working_hours","expertise","communication_preferences","bio"] },
+            standard: { expose: ["name","title","company","timezone","expertise","bio"] },
+            minimal:  { expose: ["name","title"] }
+        },
+        projects: {
+            full:     { expose: ["name","status","priority","role","summary","blockers","collaborators","recent_activity"] },
+            standard: { expose: ["name","status","priority","role","summary"] },
+            minimal:  { expose: ["name","status"] }
+        },
+        calendar: {
+            full:     { expose: ["date","start","end","title","type","attendees","location","notes"] },
+            standard: { expose: ["date","start","end","title","type"] },
+            minimal:  { expose: ["date","start","end"], transform: { title: "busy" } }
+        },
+        contacts: {
+            full:     { expose: ["name","title","relationship","interaction_frequency","notes"] },
+            standard: { expose: ["name","title","relationship"] },
+            minimal:  { expose: [], note: "Contacts module is not available at minimal tier" }
+        },
+        writing_style: {
+            full:     { expose: ["tone","length","structure","vocabulary","samples"] },
+            standard: { expose: ["tone","length","structure","vocabulary"] },
+            minimal:  { expose: ["tone"] }
+        },
+        reading_list: {
+            full:     { expose: ["title","author","type","status","notes"] },
+            standard: { expose: ["title","author","type","status"] },
+            minimal:  { expose: ["title","type"] }
+        }
+    };
+
+    // ── State ──
+
+    let currentModule = "identity";
+    let currentTier = "full";
+    const auditEntries = [];
+    const modules = ["identity","projects","calendar","contacts","writing_style","reading_list"];
+    const moduleLabels = {
+        identity: "Identity",
+        projects: "Projects",
+        calendar: "Calendar",
+        contacts: "Contacts",
+        writing_style: "Writing Style",
+        reading_list: "Reading List"
+    };
+
+    // ── Permission filtering ──
+
+    function filterRecord(record, exposedFields, transforms) {
+        if (exposedFields.length === 0) return null;
+        const filtered = {};
+        for (const field of exposedFields) {
+            if (field in record) {
+                filtered[field] = (transforms && field in transforms) ? transforms[field] : record[field];
+            }
+        }
+        return filtered;
+    }
+
+    function getFilteredData(module, tier) {
+        const rules = permissionRules[module]?.[tier];
+        if (!rules) return null;
+
+        const raw = personaData[module];
+        const exposed = rules.expose;
+        const transforms = rules.transform || {};
+
+        if (exposed.length === 0) {
+            return { _redacted: true, _note: rules.note || "No data available at this tier." };
+        }
+
+        if (Array.isArray(raw)) {
+            return raw.map(r => filterRecord(r, exposed, transforms));
+        } else {
+            return filterRecord(raw, exposed, transforms);
+        }
+    }
+
+    function getRedactedFields(module, tier) {
+        const rules = permissionRules[module];
+        if (!rules) return [];
+        const fullFields = rules.full.expose;
+        const tierFields = new Set(rules[tier].expose);
+        return fullFields.filter(f => !tierFields.has(f));
+    }
+
+    // ── Rendering ──
+
+    function renderJson(data) {
+        const json = JSON.stringify(data, null, 2);
+        return json
+            .replace(/"([^"]+)":/g, '<span class="field-key">"$1"</span>:')
+            .replace(/: "([^"]+)"/g, ': <span class="field-string">"$1"</span>')
+            .replace(/"_redacted": true/g, '<span class="field-redacted">"_redacted": true</span>')
+            .replace(/"_note": "([^"]+)"/g, '<span class="field-note">"_note": "$1"</span>');
+    }
+
+    function renderDataPanel() {
+        const data = getFilteredData(currentModule, currentTier);
+        const redacted = getRedactedFields(currentModule, currentTier);
+
+        document.getElementById("dataBody").innerHTML = renderJson(data);
+        document.getElementById("dataModuleLabel").textContent = `Module: ${moduleLabels[currentModule]}`;
+
+        const tierLabel = document.getElementById("dataTierLabel");
+        tierLabel.textContent = currentTier.toUpperCase();
+        tierLabel.className = `tier-label ${currentTier}`;
+
+        const info = redacted.length > 0
+            ? `\n\n/* Redacted at ${currentTier} tier: ${redacted.join(", ")} */`
+            : "";
+
+        if (info) {
+            document.getElementById("dataBody").innerHTML += `<span class="field-redacted">${info}</span>`;
+        }
+
+        addAuditEntry(currentModule, currentTier, permissionRules[currentModule][currentTier].expose, redacted);
+    }
+
+    function addAuditEntry(module, tier, exposed, redacted) {
+        const now = new Date().toISOString().replace("T", " ").substring(0, 19);
+        const entry = { timestamp: now, module, tier, exposed, redacted };
+        auditEntries.push(entry);
+
+        const container = document.getElementById("auditLog");
+        const div = document.createElement("div");
+        div.className = "audit-entry";
+
+        const exposedStr = exposed.length > 0
+            ? `<span class="audit-exposed">${exposed.join(", ")}</span>`
+            : '<span class="audit-redacted">none</span>';
+        const redactedStr = redacted.length > 0
+            ? `<span class="audit-redacted">${redacted.join(", ")}</span>`
+            : "none";
+
+        div.innerHTML = `<span class="audit-timestamp">[${now}]</span> <span class="audit-tool">get_${module}</span> tier=<span class="audit-tier ${tier}">${tier}</span>\n  exposed: ${exposedStr}\n  redacted: ${redactedStr}`;
+
+        container.insertBefore(div, container.firstChild);
+    }
+
+    // ── Setup ──
+
+    function setupModuleTabs() {
+        const container = document.getElementById("moduleTabs");
+        for (const mod of modules) {
+            const btn = document.createElement("button");
+            btn.className = `module-tab${mod === currentModule ? " active" : ""}`;
+            btn.textContent = moduleLabels[mod];
+            btn.addEventListener("click", () => {
+                currentModule = mod;
+                document.querySelectorAll(".module-tab").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                renderDataPanel();
+            });
+            container.appendChild(btn);
+        }
+    }
+
+    function setupTierSelector() {
+        document.querySelectorAll(".tier-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                currentTier = btn.dataset.tier;
+                document.querySelectorAll(".tier-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                renderDataPanel();
+            });
+        });
+    }
+
+    setupModuleTabs();
+    setupTierSelector();
+    renderDataPanel();
+    </script>
+</body>
+</html>

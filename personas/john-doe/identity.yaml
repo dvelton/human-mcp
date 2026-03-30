@@ -1,0 +1,32 @@
+name: John Doe
+title: Senior Product Manager
+company: Acme Technologies (fictional)
+location: San Francisco, CA
+timezone: America/Los_Angeles
+working_hours:
+  start: "09:00"
+  end: "18:00"
+  days: [monday, tuesday, wednesday, thursday, friday]
+
+expertise:
+  - Product strategy and roadmap planning
+  - Developer tools and API design
+  - Cross-functional team leadership
+  - Data-informed decision making
+
+communication_preferences:
+  style: Direct and concise
+  format: Bullet points over long paragraphs
+  response_time: Same business day for urgent, 48 hours for everything else
+  pet_peeves:
+    - Meetings that could have been an email
+    - Jargon without explanation
+    - Decisions made without data
+
+bio: >
+  John is a senior product manager at Acme Technologies, a fictional company
+  that builds developer infrastructure tools. He has 8 years of experience
+  in product management, previously at two mid-stage startups. He's known
+  for running tight sprints, writing clear PRDs, and pushing back on scope
+  creep. Outside work, he reads too much science fiction and runs half
+  marathons poorly.

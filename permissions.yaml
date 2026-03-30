@@ -1,0 +1,75 @@
+# Permission tiers control what data is exposed to LLM clients.
+# Three levels: full, standard, minimal
+# Each module defines what gets exposed and what gets redacted at each tier.
+
+default_tier: standard
+
+modules:
+  identity:
+    full:
+      expose: [name, title, company, location, timezone, working_hours, expertise, communication_preferences, bio]
+      redact: []
+    standard:
+      expose: [name, title, company, timezone, expertise, bio]
+      redact: [location, working_hours, communication_preferences]
+    minimal:
+      expose: [name, title]
+      redact: [company, location, timezone, working_hours, expertise, communication_preferences, bio]
+
+  projects:
+    full:
+      expose: [name, status, priority, role, summary, blockers, collaborators, recent_activity]
+      redact: []
+    standard:
+      expose: [name, status, priority, role, summary]
+      redact: [blockers, collaborators, recent_activity]
+    minimal:
+      expose: [name, status]
+      redact: [priority, role, summary, blockers, collaborators, recent_activity]
+
+  calendar:
+    full:
+      expose: [date, start, end, title, type, attendees, location, notes]
+      redact: []
+    standard:
+      expose: [date, start, end, title, type]
+      redact: [attendees, location, notes]
+    minimal:
+      expose: [date, start, end]
+      redact: [title, type, attendees, location, notes]
+      transform:
+        title: "busy"
+
+  contacts:
+    full:
+      expose: [name, title, relationship, interaction_frequency, notes]
+      redact: []
+    standard:
+      expose: [name, title, relationship]
+      redact: [interaction_frequency, notes]
+    minimal:
+      expose: []
+      redact: [name, title, relationship, interaction_frequency, notes]
+      note: "Contacts module is not available at minimal tier"
+
+  writing_style:
+    full:
+      expose: [tone, length, structure, vocabulary, samples]
+      redact: []
+    standard:
+      expose: [tone, length, structure, vocabulary]
+      redact: [samples]
+    minimal:
+      expose: [tone]
+      redact: [length, structure, vocabulary, samples]
+
+  reading_list:
+    full:
+      expose: [title, author, type, status, notes]
+      redact: []
+    standard:
+      expose: [title, author, type, status]
+      redact: [notes]
+    minimal:
+      expose: [title, type]
+      redact: [author, status, notes]

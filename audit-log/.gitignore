@@ -1,0 +1,3 @@
+# Audit log directory
+# Entries are written to audit.jsonl by the MCP server.
+*.jsonl

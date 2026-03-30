@@ -1,0 +1,62 @@
+writing_style:
+  tone: Professional but not formal. Comfortable being direct.
+  length: Prefers short, structured communications. Rarely writes more than 300 words in an email.
+  structure: Heavy use of bullet points, numbered lists, and headers. Avoids long paragraphs.
+  vocabulary: Plain language. Avoids jargon unless writing for a technical audience.
+
+samples:
+  - type: email
+    context: "Asking engineering lead to review a document"
+    content: |
+      Subject: Atlas PRD — eyes needed by Thursday
+
+      Sarah,
+
+      Draft PRD for the Atlas auth model is ready for review:
+      [link]
+
+      Specifically looking for your take on:
+      - Whether the token refresh approach is realistic given our infra
+      - The rate-limiting section (page 4) — I'm least confident there
+      - Anything I'm missing on backward compatibility
+
+      No need for line-by-line edits. High-level reactions are fine at this stage.
+
+      Thursday EOD would be ideal so I can incorporate feedback before the Friday planning session.
+
+      Thanks,
+      John
+
+  - type: slack_message
+    context: "Quick status update to manager"
+    content: |
+      Quick Atlas update: PRD is out for review with Sarah and Marcus.
+      Three open questions on auth model — expecting input by Thursday.
+      Security review still blocked on platform team availability.
+      Will flag if that doesn't unblock by next week.
+
+  - type: prd_excerpt
+    context: "Opening section of a product requirements document"
+    content: |
+      ## Problem
+
+      Our API gateway currently supports single-tenant workloads only.
+      Customers on shared infrastructure experience noisy-neighbor
+      performance degradation, and we have no way to enforce per-tenant
+      rate limits or auth policies.
+
+      ## Proposed Solution
+
+      Introduce tenant-aware routing and policy enforcement at the
+      gateway layer. This means:
+
+      1. Tenant identification via JWT claims on every request
+      2. Per-tenant rate limit configuration (configurable by customers)
+      3. Tenant-scoped logging and metrics
+      4. Backward-compatible — existing single-tenant customers unaffected
+
+      ## What This Is Not
+
+      This is not a full multi-tenancy migration. Database isolation,
+      billing separation, and tenant provisioning workflows are out
+      of scope for this phase.

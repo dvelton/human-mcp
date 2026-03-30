@@ -1,0 +1,63 @@
+contacts:
+  - name: Sarah Kim
+    title: Engineering Lead
+    relationship: Direct collaborator on Atlas
+    interaction_frequency: Daily
+    notes: >
+      Technical leader on the API gateway team. Very detail-oriented.
+      Prefers written communication over meetings. Has strong opinions
+      on API design — worth getting her input early.
+
+  - name: Marcus Webb
+    title: Staff Engineer
+    relationship: Key technical contributor on Atlas
+    interaction_frequency: Several times per week
+    notes: >
+      Deep expertise in distributed systems. Currently stretched thin
+      across Atlas and platform on-call rotation. Flagged bandwidth
+      concerns last week.
+
+  - name: Priya Patel
+    title: Product Manager
+    relationship: Peer PM, lead on Beacon
+    interaction_frequency: Weekly
+    notes: >
+      Running the developer portal project. Good collaborator,
+      tends to over-scope features. Useful sounding board for
+      product strategy questions.
+
+  - name: Jordan Liu
+    title: Frontend Engineer
+    relationship: Contributor on Beacon
+    interaction_frequency: Weekly
+    notes: >
+      Strong React and TypeScript skills. Currently investigating
+      search performance improvements for the developer portal.
+      Responsive and ships quickly.
+
+  - name: Amara Okafor
+    title: Security Architect
+    relationship: Collaborator on Atlas and Cipher
+    interaction_frequency: Bi-weekly
+    notes: >
+      Company's go-to on security architecture. Essential for Atlas
+      auth model review and Cipher feasibility assessment. Schedule
+      fills up fast — book time early.
+
+  - name: Lisa Chen
+    title: VP of Product
+    relationship: Direct manager
+    interaction_frequency: Weekly 1:1
+    notes: >
+      Manages the PM team. Focused on Q3 planning and headcount.
+      Appreciates concise updates with clear asks. Doesn't want
+      to be surprised by blockers.
+
+  - name: David Romero
+    title: Director of Engineering
+    relationship: Cross-functional partner
+    interaction_frequency: Bi-weekly
+    notes: >
+      Runs the platform engineering org. Key stakeholder for Atlas
+      infrastructure decisions. Pragmatic — responds well to
+      data-driven arguments.

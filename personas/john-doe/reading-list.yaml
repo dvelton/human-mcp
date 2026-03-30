@@ -1,0 +1,48 @@
+reading_list:
+  - title: "API Design Patterns"
+    author: JJ Geewax
+    type: book
+    status: reading
+    notes: >
+      Useful reference for Atlas API design decisions.
+      Chapter on versioning strategies is particularly relevant.
+
+  - title: "The Pragmatic Engineer Newsletter"
+    author: Gergely Orosz
+    type: newsletter
+    status: subscribed
+    notes: >
+      Weekly read. Good pulse on industry engineering practices
+      and compensation trends.
+
+  - title: "Building Multi-Tenant SaaS Architectures"
+    author: AWS Well-Architected
+    type: whitepaper
+    status: completed
+    notes: >
+      Read as background for Atlas. Solid on isolation patterns
+      but light on practical rate-limiting approaches.
+
+  - title: "Zero Trust Architecture"
+    author: NIST SP 800-207
+    type: whitepaper
+    status: queued
+    notes: >
+      Amara recommended for Cipher project background.
+      Haven't started yet.
+
+  - title: "Continuous Discovery Habits"
+    author: Teresa Torres
+    type: book
+    status: completed
+    notes: >
+      Changed how John runs customer interviews.
+      Recommended it to the whole PM team.
+
+  - title: "Staff Engineer: Leadership Beyond the Management Track"
+    author: Will Larson
+    type: book
+    status: completed
+    notes: >
+      Read to better understand Marcus's career trajectory
+      and how to support senior ICs on the team.
