@@ -8,7 +8,7 @@ A person-centric MCP server. Your context, your rules.
 
 This project explores what it would look like if your personal context for AI tools lived on a server *you* control — portable across LLM clients, scoped by permission tiers, and fully auditable.
 
-Everything here uses synthetic data. "John Doe" is a fictional persona at a fictional company. The code is real and functional, but it exists to demonstrate an architecture, not to handle actual personal information.
+Everything here uses synthetic data. "John Doe" is a fictional persona at a fictional company. The reference code demonstrates what the architecture would look like, not something you should run with real data.
 
 **[View the interactive demo →](https://dvelton.github.io/human-mcp/)**
 
@@ -18,7 +18,7 @@ Everything here uses synthetic data. "John Doe" is a fictional persona at a fict
 
 Read this section before doing anything else.
 
-**This project is not designed or tested for use with real personal data.** If you swap in your own information, you are accepting risks that this codebase does not mitigate. Specifically:
+**This is a concept demonstration only. It is not designed, tested, or intended for use with real personal data.** The code exists to illustrate an architecture and provoke discussion about person-centric AI context. If someone were to build this for real, the following risks would need to be addressed:
 
 **Data leaves your machine.** When an MCP client connects to this server and queries your data, that data is sent to whichever LLM the client is using. If that's a cloud-hosted model (Claude, ChatGPT, Copilot, Gemini), your personal context now lives on that provider's infrastructure — in their inference pipeline, their logs, and potentially their debug systems. The MCP server controls what leaves your machine, but once it leaves, your control ends.
 
@@ -72,78 +72,25 @@ Every tool call is logged to a local audit file with timestamps, exposed fields,
 
 ---
 
-## Setup
+## What the reference code demonstrates
 
-Requires Python 3.10+.
+The `src/` directory contains a working reference implementation using Python and FastMCP. This code exists to make the architecture concrete and inspectable — to show how permission filtering, audit logging, and module-based data serving would work in practice. It is not intended to be deployed or used with real data.
 
-```bash
-git clone https://github.com/dvelton/human-mcp.git
-cd human-mcp
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .
-```
+The reference server exposes these tools (all operating on John Doe's synthetic data):
 
-### Run the MCP server
+| Tool | What it demonstrates |
+|------|---------------------|
+| `get_identity(tier)` | Serving identity data at different permission levels |
+| `get_projects(tier)` | Project context with field-level redaction |
+| `get_calendar(tier)` | Calendar data ranging from full detail to just time blocks |
+| `get_contacts(tier)` | Contact data that is fully redacted at minimal tier |
+| `get_writing_style(tier)` | Writing preferences with samples restricted to full tier |
+| `get_reading_list(tier)` | Reading list with notes stripped at lower tiers |
+| `get_audit_log(count)` | Reviewing what data has been exposed |
+| `get_audit_summary()` | Aggregate view of all access activity |
+| `describe_permissions(module, tier)` | Introspecting what gets exposed vs. redacted |
 
-```bash
-# stdio transport (for local MCP clients like Claude Desktop or Copilot CLI)
-python -m src.server
-```
-
-### Connect to Claude Desktop
-
-Add to your Claude Desktop MCP config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
-
-```json
-{
-  "mcpServers": {
-    "human-mcp": {
-      "command": "python",
-      "args": ["-m", "src.server"],
-      "cwd": "/path/to/human-mcp"
-    }
-  }
-}
-```
-
-### Connect to Copilot CLI
-
-Add to your MCP config:
-
-```json
-{
-  "servers": {
-    "human-mcp": {
-      "command": "python",
-      "args": ["-m", "src.server"],
-      "cwd": "/path/to/human-mcp"
-    }
-  }
-}
-```
-
----
-
-## Available tools
-
-| Tool | Description |
-|------|-------------|
-| `get_identity(tier)` | Persona identity and preferences |
-| `get_projects(tier)` | Active projects and status |
-| `get_calendar(tier)` | Weekly calendar events |
-| `get_contacts(tier)` | Key contacts and collaborators |
-| `get_writing_style(tier)` | Writing preferences and samples |
-| `get_reading_list(tier)` | Current reading list |
-| `get_audit_log(count)` | View recent audit entries |
-| `get_audit_summary()` | Summary of all audit activity |
-| `describe_permissions(module, tier)` | See what gets exposed/redacted for any module+tier combination |
-
----
-
-## Audit log
-
-Every data access is recorded in `audit-log/audit.jsonl`:
+An example audit log entry:
 
 ```json
 {
@@ -156,16 +103,6 @@ Every data access is recorded in `audit-log/audit.jsonl`:
   "record_count": 10
 }
 ```
-
-Use `get_audit_log()` and `get_audit_summary()` to review from within an LLM conversation.
-
----
-
-## Creating your own persona
-
-> **Reminder: this project is not designed for real personal data.** The risks described above apply. If you proceed, understand what you're exposing and to whom.
-
-To create a new persona, copy the `personas/john-doe/` directory and edit the YAML files. The server loads from `personas/john-doe/` by default — update the `DEFAULT_PERSONA` path in `src/server.py` to point to your directory.
 
 ---
 
