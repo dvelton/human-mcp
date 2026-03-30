@@ -20,9 +20,9 @@ Everything here uses synthetic data. The reference code demonstrates what the ar
 
 ---
 
-## What problem does this address
+## What gap does this address
 
-A person-centric MCP server addresses can make personal context portable, queryable, permission-scoped, and observable.
+A person-centric MCP server can make personal context portable, queryable, permission-scoped, and observable.
 
 ---
 
